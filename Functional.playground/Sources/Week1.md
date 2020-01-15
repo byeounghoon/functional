@@ -52,8 +52,44 @@ sum(x: 5) // ???
 
 ## 익명함수 (anonymous function)
 
-- 이름이 없는 함수
-- 
+- 이름이 없는 함수  
+- Swift의 클로저에 해당
+
+```swift
+{ <#매개변수#> -> <#리턴타입#> in
+    return <#리턴값#>
+}
+```
+
+</br>
+
+```swift
+func name() -> Void {
+    print("나는 이름이 있는 함수다") 
+}
+name() // "나는 이름이 있는 함수다"
+
+let nonName = { return "나는 이름이 없는 함수다" }
+print( nonName() ) // "나는 이름이 없는 함수다"
+
+```
+
+
+</br>
+
+```swift
+var stringArray: [String] = [
+    "나는 그냥 스트링",
+    {
+        let returnString = "나는" + "" + "익명함수"
+        return returnString
+    }()
+]
+
+print(stringArray) // ["나는 그냥 스트링", "나는익명함수"]
+
+```
+
 </br></br>
 
 ## 고차함수
