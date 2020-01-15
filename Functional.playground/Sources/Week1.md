@@ -92,4 +92,115 @@ print(stringArray) // ["나는 그냥 스트링", "나는익명함수"]
 
 </br></br>
 
-## 고차함수
+## 고차함수 (Higher-Order Function)
+
+- Swift의 함수는 1급 객체로 취급받기 때문에 함수를 객체화 할 수 있다.  
+- 전달인자로써 사용할 수 있다.  
+- 매개변수로 받을 수 있다.
+- 대표적인 고차함수에는 `map`, `filter`, `reduce`가 있다. 
+
+고차함수를 사용할 수 있는 타입은 다음과 같다.
+
+> Sequence와 Collection 프로토콜을 따르는 타입  
+> Array, Dictionary, Set  
+> Optional  
+
+</br>
+
+```swift
+// map
+let evens = [0, 2, 4, 6, 8]
+let odds = [1, 3, 5, 7, 9]
+let multiplyTwo: (Int) -> Int = { $0 * 2 }
+
+let doubledEvens = evens.map(multiplyTwo) // [0, 4, 8, 12, 16]
+let doubledOdds = odds.map(multiplyTwo)  // [2, 6, 10, 14, 18]
+
+let tripleEvens = evens.map({ %0 * 3 }) // [0, 6, 12, 18, 24]
+let tripleOdds = odds.map({ %0 * 3 }) // [3, 9, 15, 21, 27]
+```
+
+```swift
+// filter
+
+let numbers = [0, 1, 2, 3, 4, 5]
+let filterFunc: (Int) -> Bool = { $0 % 2 == 0 }
+
+let evens = numbers.filter(filterFunc) // [0, 2, 4]
+let odds = numbers.map{ $0 + 3 }.filter{ $0 % 2 != 0 } // [3, 5, 7]
+
+```
+
+```swift
+// reduce
+
+let numbers = [1, 2, 3, 4]
+let numberSum = numbers.reduce(0, { x, y in
+  x + y
+})
+// CHECK-NEXT: 10
+print(numberSum)
+
+let letters = "abracadabra"
+let letterCount = letters.reduce(into: [:]) { counts, letter in
+  counts[letter, default: 0] += 1
+}
+// CHECK-NEXT: ["a", "b", "c", "d", "r"]
+print(letterCount.keys.sorted())
+print(letterCount["a"]!) // CHECK: 5
+print(letterCount["b"]!) // CHECK: 2
+print(letterCount["c"]!) // CHECK: 1
+print(letterCount["d"]!) // CHECK: 1
+print(letterCount["r"]!) // CHECK: 2
+```
+
+```swift
+// Test the two reduce methods with different levels of inference
+let numbers2 = Array(2..<7)
+
+// Test reduce(_:_:)
+// CHECK-NEXT: 20
+let sum1 = numbers2.reduce(0) { (x: Int, y: Int) -> Int in x + y }
+print(sum1)
+
+// CHECK-NEXT: 20
+let sum2 = numbers2.reduce(0) { (x, y) in x + y }
+print(sum2)
+
+// CHECK-NEXT: 20
+let sum3 = numbers2.reduce(0) { $0 + $1 }
+print(sum3)
+
+// CHECK-NEXT: 20
+let sum4 = numbers2.reduce(0, +)
+print(sum4)
+
+// Test reduce(into:_:)
+// CHECK-NEXT: 20
+let sum5 = numbers2.reduce(into: 0) { (x: inout Int, y: Int) in x += y }
+print(sum5)
+
+// CHECK-NEXT: 20
+let sum6 = numbers2.reduce(into: 0) { x, y in x += y }
+print(sum6)
+
+// CHECK-NEXT: 20
+let sum7 = numbers2.reduce(into: 0) { $0 += $1 }
+print(sum7)
+
+// CHECK-NEXT: 20
+let sum8 = numbers2.reduce(into: 0, +=)
+print(sum8)
+
+
+// Test that the initial value remains unmodified
+var original = [0, 1]
+let result = numbers2.reduce(into: original) { acc, x in
+  acc.append(x)
+}
+// CHECK-NEXT: [0, 1]
+print(original)
+// CHECK-NEXT: [0, 1, 2, 3, 4, 5, 6]
+print(result)
+
+```  
