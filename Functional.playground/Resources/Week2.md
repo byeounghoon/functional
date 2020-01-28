@@ -199,18 +199,18 @@ let shouldBeAtWork = isWorkHour(now)
 
 -----
 
-
-
-
 ## Currying
 
 -----
 
+https://www.zerocho.com/category/JavaScript/post/579236d08241b6f43951af18
 
 ## Partial Application
 
------
+-----  
+
 
 ## Memoization
 
------
+-----  
+https://www.zerocho.com/category/JavaScript/post/579248728241b6f43951af19
